@@ -32,4 +32,14 @@ type (
 		MarketCount int `json:"marketCount"`
 		Region string `json:"competitionRegion"`
 	}
+
+	EventType struct {
+		ID string `json:"id"`
+		Name string `json:"name"`
+	}
+
+	EventTypeResult struct {
+		EventType EventType `json:"eventType"`
+		MarketCount int `json:"marketCount"`
+	}
 )

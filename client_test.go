@@ -1,6 +1,7 @@
 package betfair
 
 import (
+	"context"
 	"net/http"
 	"testing"
 )
@@ -17,7 +18,17 @@ func TestClient_Login(t *testing.T) {
 		Credentials: creds,
 	}
 
-	balance, _ := client.ListCompetitions()
+	request := ListEventTypesRequest{
+		Context: context.Background(),
+		Filter: MarketFilter{
+			CompetitionIDs: []string{"10932509"},
+		},
+		Locale: "en",
+	}
 
-	t.Errorf("Competitions %+v", balance)
+	competitions, _ := client.ListEventTypes(request)
+
+	for _, comp := range competitions {
+		t.Errorf("Event %+v\n", comp)
+	}
 }
