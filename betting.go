@@ -1,42 +1,51 @@
 package betfair
 
 import (
-	"bytes"
-	"encoding/json"
+	"context"
 )
 
 const (
-	listCompetitions = "/listCompetitions/"
-	listEventTypes = "/listEventTypes/"
+	listCompetitions    = "/listCompetitions/"
+	listEvents          = "/listEvents/"
+	listEventTypes      = "/listEventTypes/"
+	listMarketCatalogue = "/listMarketCatalogue/"
 )
 
-func (c *Client) ListCompetitions(request ListCompetitionsRequest) ([]CompetitionResult, error) {
+func (c *Client) ListCompetitions(ctx context.Context, req ListCompetitionsRequest) ([]CompetitionResult, error) {
 	var response []CompetitionResult
 
-	body, err := json.Marshal(request)
-
-	if err != nil {
-		return response, err
-	}
-
-	if err := c.getResource(request.Context, bettingURL+listCompetitions, bytes.NewBuffer(body), &response); err != nil {
-		return response, err
+	if err := c.getResource(ctx, bettingURL+listCompetitions, req, &response); err != nil {
+		return nil, err
 	}
 
 	return response, nil
 }
 
-func (c *Client) ListEventTypes(request ListEventTypesRequest) ([]EventTypeResult, error) {
+func (c *Client) ListEventTypes(ctx context.Context, req ListEventTypesRequest) ([]EventTypeResult, error) {
 	var response []EventTypeResult
 
-	body, err := json.Marshal(request)
-
-	if err != nil {
-		return response, err
+	if err := c.getResource(ctx, bettingURL+listEventTypes, req, &response); err != nil {
+		return nil, err
 	}
 
-	if err := c.getResource(request.Context, bettingURL+listEventTypes, bytes.NewBuffer(body), &response); err != nil {
-		return response, err
+	return response, nil
+}
+
+func (c *Client) ListEvents(ctx context.Context, req ListEventsRequest) ([]EventResult, error) {
+	var response []EventResult
+
+	if err := c.getResource(ctx, bettingURL+listEvents, req, &response); err != nil {
+		return nil, err
+	}
+
+	return response, nil
+}
+
+func (c *Client) ListMarketCatalogue(ctx context.Context, req ListMarketCatalogueRequest) ([]MarketCatalogue, error) {
+	var response []MarketCatalogue
+
+	if err := c.getResource(ctx, bettingURL+listMarketCatalogue, req, &response); err != nil {
+		return nil, err
 	}
 
 	return response, nil

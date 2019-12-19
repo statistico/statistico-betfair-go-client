@@ -1,6 +1,7 @@
 package betfair
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -15,10 +16,10 @@ const loginURL = "https://identitysso.betfair.com/api/login"
 
 type Client struct {
 	HTTPClient  *http.Client
-	Credentials Credentials
+	Credentials InteractiveCredentials
 }
 
-type Credentials struct {
+type InteractiveCredentials struct {
 	Username string
 	Password string
 	Key      string
@@ -66,23 +67,39 @@ func (c *Client) createSession() error {
 	return nil
 }
 
-func (c *Client) getResource(ctx context.Context, url string, body io.Reader, response interface{}) error {
-	req, err := http.NewRequest(http.MethodPost, url, body)
+func (c *Client) getResource(ctx context.Context, url string, req interface{}, res interface{}) error {
+	request, err := c.buildRequest(ctx, url, req)
 
 	if err != nil {
 		return err
 	}
 
+	return c.do(request, res)
+}
+
+func (c *Client) buildRequest(ctx context.Context, url string, body interface{}) (*http.Request, error) {
+	parsed, err := json.Marshal(body)
+
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, url, bytes.NewBuffer(parsed))
+
+	if err != nil {
+		return nil, err
+	}
+
 	req = req.WithContext(ctx)
 
 	if err := c.addHeaders(req); err != nil {
-		return err
+		return nil, err
 	}
 
-	return c.do(ctx, req, response)
+	return req, nil
 }
 
-func (c *Client) do(ctx context.Context, req *http.Request, resp interface{}) error {
+func (c *Client) do(req *http.Request, resp interface{}) error {
 	response, err := c.HTTPClient.Do(req)
 
 	if err != nil {

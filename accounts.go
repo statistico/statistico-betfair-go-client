@@ -6,23 +6,35 @@ import (
 
 const (
 	getAccountDetails = "/getAccountDetails/"
-	getAccountFunds = "/getAccountFunds/"
+	getAccountFunds   = "/getAccountFunds/"
 )
 
-func (c *Client) AccountFunds() (*AccountFunds, error) {
+func (c *Client) AccountFunds(ctx context.Context) (*AccountFunds, error) {
 	var response AccountFunds
 
-	if err := c.getResource(context.Background(), accountsURL+getAccountFunds, nil, &response); err != nil {
+	req, err := c.buildRequest(ctx, accountsURL+getAccountFunds, nil)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if err := c.do(req, &response); err != nil {
 		return &response, err
 	}
 
 	return &response, nil
 }
 
-func (c *Client) AccountDetails() (*AccountDetails, error) {
+func (c *Client) AccountDetails(ctx context.Context) (*AccountDetails, error) {
 	var response AccountDetails
 
-	if err := c.getResource(context.Background(), accountsURL+getAccountDetails, nil, &response); err != nil {
+	req, err := c.buildRequest(ctx, accountsURL+getAccountDetails, nil)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if err := c.do(req, &response); err != nil {
 		return &response, err
 	}
 
