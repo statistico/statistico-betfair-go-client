@@ -2,17 +2,17 @@ package betfair
 
 type ListCompetitionsRequest struct {
 	Filter MarketFilter `json:"filter"`
-	Locale string       `json:"locale, omitempty"`
+	Locale string       `json:"locale,omitempty"`
 }
 
 type ListEventTypesRequest struct {
 	Filter MarketFilter `json:"filter"`
-	Locale string       `json:"locale, omitempty"`
+	Locale string       `json:"locale,omitempty"`
 }
 
 type ListEventsRequest struct {
 	Filter MarketFilter `json:"filter"`
-	Locale string       `json:"locale, omitempty"`
+	Locale string       `json:"locale,omitempty"`
 }
 
 type ListMarketBookRequest struct {
@@ -31,8 +31,8 @@ type ListMarketBookRequest struct {
 
 type ListMarketCatalogueRequest struct {
 	Filter           MarketFilter `json:"filter"`
-	MarketProjection []string     `json:"marketProjection, omitempty"`
+	MarketProjection []string     `json:"marketProjection,omitempty"`
 	Sort             string       `json:"sort"`
 	MaxResults       int          `json:"maxResults"`
-	Locale           string       `json:"locale, omitempty"`
+	Locale           string       `json:"locale,omitempty"`
 }
