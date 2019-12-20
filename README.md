@@ -19,11 +19,11 @@ package main
 import (
     "context"
     "fmt"
-    "github.com/statistico/statistico-sportmonks-go-client"
+    "github.com/statistico/statistico-betfair-go-client"
 )
 
 func main() {
-    creds := InteractiveCredentials{
+    creds := betfair.InteractiveCredentials{
         Username:   "user@email.com",
         Password:   "my-secret-password-1",
         Key :       "thUjaEEdBy",
