@@ -44,7 +44,7 @@ func main() {
     competitions, err := client.ListCompetitions(context.Background(), ListCompetitionsRequest{}) 
 
     if err != nil {
-        fmt.Printf("%s\n", err)
+        fmt.Printf("%s\n", err.Error())
         return
     }
 
