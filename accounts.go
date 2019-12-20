@@ -9,33 +9,23 @@ const (
 	getAccountFunds   = "/getAccountFunds/"
 )
 
+// AccountFunds returns the available to bet amount, exposure and commission information.
 func (c *Client) AccountFunds(ctx context.Context) (*AccountFunds, error) {
 	var response AccountFunds
 
-	req, err := c.buildRequest(ctx, accountsURL+getAccountFunds, nil)
-
-	if err != nil {
+	if err := c.getResource(ctx, c.BaseURLs.Accounts+getAccountFunds, nil, &response); err != nil {
 		return nil, err
-	}
-
-	if err := c.do(req, &response); err != nil {
-		return &response, err
 	}
 
 	return &response, nil
 }
 
+// AccountDetails returns the details relating your account, including your discount rate and Betfair point balance.
 func (c *Client) AccountDetails(ctx context.Context) (*AccountDetails, error) {
 	var response AccountDetails
 
-	req, err := c.buildRequest(ctx, accountsURL+getAccountDetails, nil)
-
-	if err != nil {
+	if err := c.getResource(ctx, c.BaseURLs.Accounts+getAccountDetails, nil, &response); err != nil {
 		return nil, err
-	}
-
-	if err := c.do(req, &response); err != nil {
-		return &response, err
 	}
 
 	return &response, nil

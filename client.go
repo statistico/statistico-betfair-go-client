@@ -10,13 +10,10 @@ import (
 	"strings"
 )
 
-const accountsURL = "https://api.betfair.com/exchange/account/rest/v1.0"
-const bettingURL = "https://api.betfair.com/exchange/betting/rest/v1.0"
-const loginURL = "https://identitysso.betfair.com/api/login"
-
 type Client struct {
 	HTTPClient  *http.Client
 	Credentials InteractiveCredentials
+	BaseURLs    BaseURLs
 }
 
 type InteractiveCredentials struct {
@@ -24,6 +21,12 @@ type InteractiveCredentials struct {
 	Password string
 	Key      string
 	Token    string
+}
+
+type BaseURLs struct {
+	Accounts string
+	Betting  string
+	Login    string
 }
 
 type session struct {
@@ -36,7 +39,7 @@ type session struct {
 func (c *Client) createSession() error {
 	body := fmt.Sprintf("username=%s&password=%s", c.Credentials.Username, c.Credentials.Password)
 
-	req, err := http.NewRequest(http.MethodPost, loginURL, strings.NewReader(body))
+	req, err := http.NewRequest(http.MethodPost, c.BaseURLs.Login, strings.NewReader(body))
 
 	if err != nil {
 		return err
@@ -108,6 +111,10 @@ func (c *Client) do(req *http.Request, resp interface{}) error {
 
 	defer response.Body.Close()
 
+	if err = checkStatusCode(response); err != nil {
+		return err
+	}
+
 	return parseJSONResponseBody(response.Body, resp)
 }
 
@@ -123,6 +130,27 @@ func (c *Client) addHeaders(req *http.Request) error {
 	}
 
 	req.Header.Set("X-Authentication", c.Credentials.Token)
+
+	return nil
+}
+
+func checkStatusCode(resp *http.Response) error {
+	if resp.StatusCode != http.StatusOK {
+		err := ErrorResponse{}
+
+		e := parseJSONResponseBody(resp.Body, &err)
+
+		if e != nil {
+			return e
+		}
+
+		return fmt.Errorf(
+			"error: FaultCode '%s' Fault '%s' ErrorCode '%s'",
+			err.FaultCode,
+			err.FaultString,
+			err.Detail.AccountAPINGException.ErrorCode,
+		)
+	}
 
 	return nil
 }

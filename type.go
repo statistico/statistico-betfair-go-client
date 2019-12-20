@@ -58,6 +58,42 @@ type (
 		MarketCount int       `json:"marketCount"`
 	}
 
+	ExchangePrices struct {
+		AvailableToBack []PriceSize `json:"availableToBack"`
+		AvailableToLay  []PriceSize `json:"availableToLay"`
+		TradedVolume    []PriceSize `json:"tradedVolume"`
+	}
+
+	KeyLineDescription struct {
+		KeyLine []KeyLineSelection `json:"keyLine"`
+	}
+
+	KeyLineSelection struct {
+		SelectionID string  `json:"selectionId"`
+		Handicap    float32 `json:"handicap"`
+	}
+
+	MarketBook struct {
+		MarketID              string             `json:"marketId"`
+		IsMarketDataDelayed   bool               `json:"isMarketDataDelayed"`
+		Status                string             `json:"status"`
+		BetDelay              uint32             `json:"betDelay"`
+		BSPReconciled         bool               `json:"bspReconciled"`
+		Complete              bool               `json:"complete"`
+		InPlay                bool               `json:"inplay"`
+		NumberOfWinners       uint32             `json:"numberOfWinners"`
+		NumberOfRunners       uint32             `json:"numberOfRunners"`
+		NumberOfActiveRunners uint32             `json:"numberOfActiveRunners"`
+		LastMatchTime         string             `json:"lastMatchTime"`
+		TotalMatched          float32            `json:"totalMatched"`
+		TotalAvailable        float32            `json:"totalAvailable"`
+		CrossMatching         bool               `json:"crossMatching"`
+		RunnersVoidable       bool               `json:"runnersVoidable"`
+		Version               int                `json:"version"`
+		Runners               []Runner           `json:"runners"`
+		KeyLineDescription    KeyLineDescription `json:"keyLineDescription"`
+	}
+
 	MarketCatalogue struct {
 		MarketID        string            `json:"marketId"`
 		MarketName      string            `json:"marketName"`
@@ -99,8 +135,42 @@ type (
 		MarketUnit   string  `json:"marketUnit"`
 	}
 
+	Match struct {
+		BetID     string  `json:"betId"`
+		MatchID   string  `json:"matchId"`
+		Side      string  `json:"side"`
+		Price     float32 `json:"price"`
+		Size      float32 `json:"size"`
+		MatchDate string  `json:"matchDate"`
+	}
+
+	Order struct {
+		BetID               string  `json:"betid"`
+		OrderType           string  `json:"orderType"`
+		Status              string  `json:"status"`
+		PersistenceType     string  `json:"persistenceType"`
+		Side                string  `json:"side"`
+		Price               float32 `json:"price"`
+		Size                float32 `json:"size"`
+		BSPLiability        float32 `json:"bspLiability"`
+		PlacedDate          string  `json:"placedDate"`
+		AvgPriceMatched     float32 `json:"avgPriceMatched"`
+		SizeMatched         float32 `json:"sizeMatched"`
+		SizeRemaining       float32 `json:"sizeRemaining"`
+		SizeLapsed          float32 `json:"sizeLapsed"`
+		SizeCancelled       float32 `json:"sizeCancelled"`
+		SizeVoided          float32 `json:"sizeVoided"`
+		CustomerOrderRef    string  `json:"customerOrderRef"`
+		CustomerStrategyRef string  `json:"customerStrategyRef"`
+	}
+
 	PriceLadderDescription struct {
 		Type string `json:"type"`
+	}
+
+	PriceSize struct {
+		Price float32 `json:"price"`
+		Size  float32 `json:"size"`
 	}
 
 	RunnerCatalogue struct {
@@ -109,5 +179,28 @@ type (
 		Handicap     string            `json:"handicap"`
 		SortPriority int               `json:"sortPriority"`
 		MetaData     map[string]string `json:"metadata"`
+	}
+
+	Runner struct {
+		SelectionID      int            `json:"selectionId"`
+		Handicap         float32        `json:"handicap"`
+		Status           string         `json:"status"`
+		AdjustmentFactor float32        `json:"adjustmentFactor"`
+		LastPriceTraded  float32        `json:"lastPriceTraded"`
+		TotalMatched     float32        `json:"totalMatched"`
+		RemovalDate      string         `json:"removalDate"`
+		SP               StartingPrices `json:"sp"`
+		EX               ExchangePrices `json:"ex"`
+		Orders           []Order        `json:"orders"`
+		Matches          []Match        `json:"matches"`
+		KeyLineDescription
+	}
+
+	StartingPrices struct {
+		NearPrice         float32     `json:"nearPrice"`
+		FarPRice          float32     `json:"farPrice"`
+		BackStakeTaken    []PriceSize `json:"backStakeTaken"`
+		LayLiabilityTaken []PriceSize `json:"layLiabilityTaken"`
+		ActualSP          float32     `json:"actualSP"`
 	}
 )
