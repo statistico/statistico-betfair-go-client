@@ -39,7 +39,7 @@ type ListMarketCatalogueRequest struct {
 
 type ListRunnerBookRequest struct {
 	MarketID                      string          `json:"marketId"`
-	SelectionID                   string          `json:"selectionId"`
+	SelectionID                   uint64          `json:"selectionId"`
 	Handicap                      float32         `json:"handicap,omitempty"`
 	PriceProjection               PriceProjection `json:"priceProjection,omitempty"`
 	OrderProjection               string          `json:"orderProjection,omitempty"`
