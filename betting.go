@@ -10,6 +10,7 @@ const (
 	listEventTypes      = "/listEventTypes/"
 	listMarketBook      = "/listMarketBook/"
 	listMarketCatalogue = "/listMarketCatalogue/"
+	listRunnerBook      = "/listRunnerBook"
 )
 
 // ListCompetition returns a slice of Competition struct (i.e., World Cup 2013) associated with the markets
@@ -72,6 +73,19 @@ func (c *Client) ListMarketBook(ctx context.Context, req ListMarketBookRequest) 
 	var response []MarketBook
 
 	if err := c.getResource(ctx, c.BaseURLs.Betting+listMarketBook, req, &response); err != nil {
+		return nil, err
+	}
+
+	return response, nil
+}
+
+// ListRunnerBook return a list of dynamic data about a market and a specified runner. Dynamic data includes prices,
+// the status of the market, the status of selections, the traded volume, and the status of any orders you have
+// placed in the market.
+func (c *Client) ListRunnerBook(ctx context.Context, req ListRunnerBookRequest) ([]MarketBook, error) {
+	var response []MarketBook
+
+	if err := c.getResource(ctx, c.BaseURLs.Betting+listRunnerBook, req, &response); err != nil {
 		return nil, err
 	}
 
