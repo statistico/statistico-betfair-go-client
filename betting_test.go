@@ -279,6 +279,75 @@ func TestClient_ListMarketBook(t *testing.T) {
 	})
 }
 
+func TestClient_ListRunnerBook(t *testing.T) {
+	t.Run("returns a slice of market book struct", func(t *testing.T) {
+		url := "https://test/betting/rest/v1.0/listRunnerBook/"
+		server := mockResponseServer(t, marketBookResponse, 200, url)
+
+		client := Client{
+			HTTPClient:  server,
+			Credentials: creds,
+			BaseURLs:    base,
+		}
+
+		book, err := client.ListRunnerBook(context.Background(), ListRunnerBookRequest{})
+
+		if err != nil {
+			t.Fatalf("Test failed, expected nil, got %s", err.Error())
+		}
+
+		assert.Equal(t, 1, len(book))
+		assert.Equal(t, "1.166260957", book[0].MarketID)
+		assert.Equal(t, true, book[0].IsMarketDataDelayed)
+		assert.Equal(t, "OPEN", book[0].Status)
+		assert.Equal(t, uint32(0), book[0].BetDelay)
+		assert.Equal(t, false, book[0].BSPReconciled)
+		assert.Equal(t, true, book[0].Complete)
+		assert.Equal(t, false, book[0].InPlay)
+		assert.Equal(t, uint32(1), book[0].NumberOfWinners)
+		assert.Equal(t, uint32(2), book[0].NumberOfRunners)
+		assert.Equal(t, uint32(2), book[0].NumberOfActiveRunners)
+		assert.Equal(t, "2019-12-20T20:14:58.282Z", book[0].LastMatchTime)
+		assert.Equal(t, float32(2769.45), book[0].TotalMatched)
+		assert.Equal(t, float32(76229.91), book[0].TotalAvailable)
+		assert.Equal(t, true, book[0].CrossMatching)
+		assert.Equal(t, false, book[0].RunnersVoidable)
+		assert.Equal(t, 3089381622, book[0].Version)
+		assert.Equal(t, 2, len(book[0].Runners))
+		assert.Equal(t, 47972, book[0].Runners[0].SelectionID)
+		assert.Equal(t, float32(0), book[0].Runners[0].Handicap)
+		assert.Equal(t, "ACTIVE", book[0].Runners[0].Status)
+		assert.Equal(t, float32(2.64), book[0].Runners[0].LastPriceTraded)
+		assert.Equal(t, float32(0), book[0].Runners[0].TotalMatched)
+		assert.Equal(t, 47973, book[0].Runners[1].SelectionID)
+		assert.Equal(t, float32(0), book[0].Runners[1].Handicap)
+		assert.Equal(t, "ACTIVE", book[0].Runners[1].Status)
+		assert.Equal(t, float32(1.61), book[0].Runners[1].LastPriceTraded)
+		assert.Equal(t, float32(0), book[0].Runners[1].TotalMatched)
+	})
+
+	t.Run("gracefully handles error response", func(t *testing.T) {
+		url := "https://test/betting/rest/v1.0/listRunnerBook/"
+		server := mockResponseServer(t, errorBettingResponse, 400, url)
+
+		client := Client{
+			HTTPClient:  server,
+			Credentials: creds,
+			BaseURLs:    base,
+		}
+
+		book, err := client.ListRunnerBook(context.Background(), ListRunnerBookRequest{})
+
+		if book != nil {
+			t.Fatalf("Test failed, expected nil, got %+v", book)
+		}
+
+		str := "error: FaultCode 'Client' Fault 'DSC-0018' ErrorCode ''"
+
+		assert.Equal(t, str, err.Error())
+	})
+}
+
 var competitionsResponse = `
 [
 	{
