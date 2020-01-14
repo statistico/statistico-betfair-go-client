@@ -36,3 +36,19 @@ type ListMarketCatalogueRequest struct {
 	MaxResults       int          `json:"maxResults"`
 	Locale           string       `json:"locale,omitempty"`
 }
+
+type ListRunnerBookRequest struct {
+	MarketID                      string          `json:"marketId"`
+	SelectionID                   string          `json:"selectionId"`
+	Handicap                      float32         `json:"handicap,omitempty"`
+	PriceProjection               PriceProjection `json:"priceProjection,omitempty"`
+	OrderProjection               string          `json:"orderProjection,omitempty"`
+	MatchProjection               string          `json:"matchProjection,omitempty"`
+	IncludeOverallPosition        bool            `json:"includeOverallPosition,omitempty"`
+	PartitionMatchedByStrategyRef bool            `json:"partitionMatchedByStrategyRef,omitempty"`
+	CustomerStrategyRefs          []string        `json:"customerStrategyRefs,omitempty"`
+	CurrencyCode                  string          `json:"currencyCode,omitempty"`
+	Locale                        string          `json:"locale,omitempty"`
+	MatchedSince                  string          `json:"matchedSince,omitempty"`
+	BetIDs                        []string        `json:"betids,omitempty"`
+}
