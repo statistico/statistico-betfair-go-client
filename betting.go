@@ -10,7 +10,7 @@ const (
 	listEventTypes      = "/listEventTypes/"
 	listMarketBook      = "/listMarketBook/"
 	listMarketCatalogue = "/listMarketCatalogue/"
-	listRunnerBook      = "/listRunnerBook"
+	listRunnerBook      = "/listRunnerBook/"
 )
 
 // ListCompetition returns a slice of Competition struct (i.e., World Cup 2013) associated with the markets
