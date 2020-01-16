@@ -176,7 +176,7 @@ type (
 	RunnerCatalogue struct {
 		SelectionID  uint64            `json:"selectionId"`
 		RunnerName   string            `json:"runnerName"`
-		Handicap     string            `json:"handicap"`
+		Handicap     float32           `json:"handicap"`
 		SortPriority int               `json:"sortPriority"`
 		MetaData     map[string]string `json:"metadata"`
 	}
