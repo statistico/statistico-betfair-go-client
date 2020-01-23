@@ -10,6 +10,12 @@ import (
 	"strings"
 )
 
+const (
+	AccountsURL = "https://api.betfair.com/exchange/account/rest/v1.0"
+	BettingURL = "https://api.betfair.com/exchange/betting/rest/v1.0"
+	LoginURL =    "https://identitysso.betfair.com/api/login"
+)
+
 type Client struct {
 	HTTPClient  *http.Client
 	Credentials InteractiveCredentials
