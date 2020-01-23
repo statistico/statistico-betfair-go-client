@@ -28,7 +28,7 @@ type MarketFilter struct {
 }
 
 type PriceProjection struct {
-	PriceData             []string
+	PriceData             []string              `json:"priceData,omitempty"`
 	ExBestOffersOverrides ExBestOffersOverrides `json:"exBestOffersOverrides,omitempty"`
 	Virtualise            bool                  `json:"virtualise,omitempty"`
 	RolloverStakes        bool                  `json:"rolloverStakes,omitempty"`
