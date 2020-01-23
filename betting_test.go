@@ -282,7 +282,7 @@ func TestClient_ListMarketBook(t *testing.T) {
 func TestClient_ListRunnerBook(t *testing.T) {
 	t.Run("returns a slice of market book struct", func(t *testing.T) {
 		url := "https://test/betting/rest/v1.0/listRunnerBook/"
-		server := mockResponseServer(t, marketBookResponse, 200, url)
+		server := mockResponseServer(t, listRunnerResponse, 200, url)
 
 		client := Client{
 			HTTPClient:  server,
@@ -297,7 +297,7 @@ func TestClient_ListRunnerBook(t *testing.T) {
 		}
 
 		assert.Equal(t, 1, len(book))
-		assert.Equal(t, "1.166260957", book[0].MarketID)
+		assert.Equal(t, "1.167425856", book[0].MarketID)
 		assert.Equal(t, true, book[0].IsMarketDataDelayed)
 		assert.Equal(t, "OPEN", book[0].Status)
 		assert.Equal(t, uint32(0), book[0].BetDelay)
@@ -307,23 +307,32 @@ func TestClient_ListRunnerBook(t *testing.T) {
 		assert.Equal(t, uint32(1), book[0].NumberOfWinners)
 		assert.Equal(t, uint32(2), book[0].NumberOfRunners)
 		assert.Equal(t, uint32(2), book[0].NumberOfActiveRunners)
-		assert.Equal(t, "2019-12-20T20:14:58.282Z", book[0].LastMatchTime)
-		assert.Equal(t, float32(2769.45), book[0].TotalMatched)
-		assert.Equal(t, float32(76229.91), book[0].TotalAvailable)
+		assert.Equal(t, "2020-01-23T17:44:45.559Z", book[0].LastMatchTime)
+		assert.Equal(t, float32(77184.93), book[0].TotalMatched)
+		assert.Equal(t, float32(334223.54), book[0].TotalAvailable)
 		assert.Equal(t, true, book[0].CrossMatching)
 		assert.Equal(t, false, book[0].RunnersVoidable)
-		assert.Equal(t, 3089381622, book[0].Version)
-		assert.Equal(t, 2, len(book[0].Runners))
+		assert.Equal(t, 3117607446, book[0].Version)
+		assert.Equal(t, 1, len(book[0].Runners))
 		assert.Equal(t, 47972, book[0].Runners[0].SelectionID)
 		assert.Equal(t, float32(0), book[0].Runners[0].Handicap)
 		assert.Equal(t, "ACTIVE", book[0].Runners[0].Status)
-		assert.Equal(t, float32(2.64), book[0].Runners[0].LastPriceTraded)
+		assert.Equal(t, float32(2.02), book[0].Runners[0].LastPriceTraded)
 		assert.Equal(t, float32(0), book[0].Runners[0].TotalMatched)
-		assert.Equal(t, 47973, book[0].Runners[1].SelectionID)
-		assert.Equal(t, float32(0), book[0].Runners[1].Handicap)
-		assert.Equal(t, "ACTIVE", book[0].Runners[1].Status)
-		assert.Equal(t, float32(1.61), book[0].Runners[1].LastPriceTraded)
-		assert.Equal(t, float32(0), book[0].Runners[1].TotalMatched)
+		assert.Equal(t, 3, len(book[0].Runners[0].EX.AvailableToBack))
+		assert.Equal(t, float32(2.02), book[0].Runners[0].EX.AvailableToBack[0].Price)
+		assert.Equal(t, float32(873.64), book[0].Runners[0].EX.AvailableToBack[0].Size)
+		assert.Equal(t, float32(2.0), book[0].Runners[0].EX.AvailableToBack[1].Price)
+		assert.Equal(t, float32(4444.81), book[0].Runners[0].EX.AvailableToBack[1].Size)
+		assert.Equal(t, float32(1.99), book[0].Runners[0].EX.AvailableToBack[2].Price)
+		assert.Equal(t, float32(675.28), book[0].Runners[0].EX.AvailableToBack[2].Size)
+		assert.Equal(t, 3, len(book[0].Runners[0].EX.AvailableToLay))
+		assert.Equal(t, float32(2.04), book[0].Runners[0].EX.AvailableToLay[0].Price)
+		assert.Equal(t, float32(245.98), book[0].Runners[0].EX.AvailableToLay[0].Size)
+		assert.Equal(t, float32(2.06), book[0].Runners[0].EX.AvailableToLay[1].Price)
+		assert.Equal(t, float32(2437.16), book[0].Runners[0].EX.AvailableToLay[1].Size)
+		assert.Equal(t, float32(2.08), book[0].Runners[0].EX.AvailableToLay[2].Price)
+		assert.Equal(t, float32(789.3), book[0].Runners[0].EX.AvailableToLay[2].Size)
 	})
 
 	t.Run("gracefully handles error response", func(t *testing.T) {
@@ -463,6 +472,67 @@ var marketCatalogueResponse = `
     	"marketName": "Trump Exit Date",
     	"totalMatched": 912082.02
   	}
+]`
+
+var listRunnerResponse = `[
+  {
+    "marketId": "1.167425856",
+    "isMarketDataDelayed": true,
+    "status": "OPEN",
+    "betDelay": 0,
+    "bspReconciled": false,
+    "complete": true,
+    "inplay": false,
+    "numberOfWinners": 1,
+    "numberOfRunners": 2,
+    "numberOfActiveRunners": 2,
+    "lastMatchTime": "2020-01-23T17:44:45.559Z",
+    "totalMatched": 77184.93,
+    "totalAvailable": 334223.54,
+    "crossMatching": true,
+    "runnersVoidable": false,
+    "version": 3117607446,
+    "runners": [
+      {
+        "selectionId": 47972,
+        "handicap": 0.0,
+        "status": "ACTIVE",
+        "lastPriceTraded": 2.02,
+        "totalMatched": 0.0,
+        "ex": {
+          "availableToBack": [
+            {
+              "price": 2.02,
+              "size": 873.64
+            },
+            {
+              "price": 2.0,
+              "size": 4444.81
+            },
+            {
+              "price": 1.99,
+              "size": 675.28
+            }
+          ],
+          "availableToLay": [
+            {
+              "price": 2.04,
+              "size": 245.98
+            },
+            {
+              "price": 2.06,
+              "size": 2437.16
+            },
+            {
+              "price": 2.08,
+              "size": 789.3
+            }
+          ],
+          "tradedVolume": []
+        }
+      }
+    ]
+  }
 ]`
 
 var errorBettingResponse = `
