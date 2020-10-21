@@ -32,7 +32,7 @@ type ListMarketBookRequest struct {
 type ListMarketCatalogueRequest struct {
 	Filter           MarketFilter `json:"filter"`
 	MarketProjection []string     `json:"marketProjection,omitempty"`
-	Sort             string       `json:"sort"`
+	Sort             string       `json:"sort,omitempty"`
 	MaxResults       int          `json:"maxResults"`
 	Locale           string       `json:"locale,omitempty"`
 }
