@@ -357,6 +357,72 @@ func TestClient_ListRunnerBook(t *testing.T) {
 	})
 }
 
+func TestClient_PlaceOrder(t *testing.T) {
+	t.Run("returns a PlaceExecutionReport struct", func(t *testing.T) {
+		url := "https://test/betting/rest/v1.0/placeOrders/"
+		server := mockResponseServer(t, placeOrderResponse, 200, url)
+
+		client := Client{
+			HTTPClient:  server,
+			Credentials: creds,
+			BaseURLs:    base,
+		}
+
+		report, err := client.PlaceOrder(context.Background(), PlaceOrderRequest{})
+
+		if err != nil {
+			t.Fatalf("Test failed, expected nil, got %s", err.Error())
+		}
+
+		a := assert.New(t)
+
+		instruction := PlaceInstruction{
+			OrderType:          "LIMIT",
+			SelectionID:        47973,
+			Side:               "BACK",
+			LimitOrder:         LimitOrder{
+				Size: 8.24,
+				Price: 1.62,
+				PersistenceType: "PERSIST",
+			},
+		}
+
+		a.Equal("1.173957583", report.MarketID)
+		a.Equal("SUCCESS", report.Status)
+		a.Empty(report.ErrorCode)
+		a.Empty(report.CustomerRef)
+		a.Equal("SUCCESS", report.InstructionReports[0].Status)
+		a.Empty(report.InstructionReports[0].ErrorCode)
+		a.Equal("214568461952", report.InstructionReports[0].BetID)
+		a.Equal("2020-10-22T10:46:57.000Z", report.InstructionReports[0].PlacedDate)
+		a.Equal(float32(1.62), report.InstructionReports[0].AveragePriceMatched)
+		a.Equal(float32(8.24), report.InstructionReports[0].SizeMatched)
+		a.Equal("EXECUTION_COMPLETE", report.InstructionReports[0].OrderStatus)
+		a.Equal(instruction, report.InstructionReports[0].Instruction)
+	})
+
+	t.Run("gracefully handles error response", func(t *testing.T) {
+		url := "https://test/betting/rest/v1.0/placeOrders/"
+		server := mockResponseServer(t, errorBettingResponse, 400, url)
+
+		client := Client{
+			HTTPClient:  server,
+			Credentials: creds,
+			BaseURLs:    base,
+		}
+
+		report, err := client.PlaceOrder(context.Background(), PlaceOrderRequest{})
+
+		if report != nil {
+			t.Fatalf("Test failed, expected nil, got %+v", report)
+		}
+
+		str := "error: FaultCode 'Client' Fault 'DSC-0018' ErrorCode ''"
+
+		assert.Equal(t, str, err.Error())
+	})
+}
+
 var competitionsResponse = `
 [
 	{
@@ -534,6 +600,31 @@ var listRunnerResponse = `[
     ]
   }
 ]`
+
+var placeOrderResponse = `{
+  "status": "SUCCESS",
+  "marketId": "1.173957583",
+  "instructionReports": [
+    {
+      "status": "SUCCESS",
+      "instruction": {
+        "selectionId": 47973,
+        "limitOrder": {
+          "size": 8.24,
+          "price": 1.62,
+          "persistenceType": "PERSIST"
+        },
+        "orderType": "LIMIT",
+        "side": "BACK"
+      },
+      "betId": "214568461952",
+      "placedDate": "2020-10-22T10:46:57.000Z",
+      "averagePriceMatched": 1.62,
+      "sizeMatched": 8.24,
+      "orderStatus": "EXECUTION_COMPLETE"
+    }
+  ]
+}`
 
 var errorBettingResponse = `
 {

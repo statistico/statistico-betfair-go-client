@@ -73,6 +73,21 @@ type (
 		Handicap    float32 `json:"handicap"`
 	}
 
+	LimitOnCloseOrder struct {
+		Liability float32 `json:"liability"`
+		Price     float32 `json:"price"`
+	}
+
+	LimitOrder struct {
+		Size            float32 `json:"size"`
+		Price           float32 `json:"price"`
+		PersistenceType string  `json:"persistenceType"`
+		TimeInForce     string  `json:"timeInForce,omitempty"`
+		MinFillSize     float32 `json:"minFillSize,omitempty"`
+		BetTargetType   string  `json:"betTargetType,omitempty"`
+		BetTargetSize   float32 `json:"betTargetSize,omitempty"`
+	}
+
 	MarketBook struct {
 		MarketID              string             `json:"marketId"`
 		IsMarketDataDelayed   bool               `json:"isMarketDataDelayed"`
@@ -135,6 +150,10 @@ type (
 		MarketUnit   string  `json:"marketUnit"`
 	}
 
+	MarketOnCloseOrder struct {
+		Liability float32 `json:"liability"`
+	}
+
 	Match struct {
 		BetID     string  `json:"betId"`
 		MatchID   string  `json:"matchId"`
@@ -162,6 +181,36 @@ type (
 		SizeVoided          float32 `json:"sizeVoided"`
 		CustomerOrderRef    string  `json:"customerOrderRef"`
 		CustomerStrategyRef string  `json:"customerStrategyRef"`
+	}
+
+	PlaceExecutionReport struct {
+		MarketID           string                   `json:"marketId"`
+		Status             string                   `json:"status"`
+		ErrorCode          string                   `json:"errorCode,omitempty"`
+		CustomerRef        string                   `json:"customerRef,omitempty"`
+		InstructionReports []PlaceInstructionReport `json:"instructionReports"`
+	}
+
+	PlaceInstruction struct {
+		OrderType          string             `json:"orderType"`
+		SelectionID        uint64             `json:"selectionId"`
+		Handicap           float32            `json:"handicap,omitempty"`
+		Side               string             `json:"side"`
+		LimitOrder         LimitOrder         `json:"limitOrder,omitempty"`
+		LimitOnCloseOrder  LimitOnCloseOrder  `json:"limitOnCloseOrder,omitempty"`
+		MarketOnCloseOrder MarketOnCloseOrder `json:"marketOnCloseOrder,omitempty"`
+		CustomerOrderRef   string             `json:"customerOrderRef,omitempty"`
+	}
+
+	PlaceInstructionReport struct {
+		Status              string           `json:"status"`
+		ErrorCode           string           `json:"errorCode,omitempty"`
+		OrderStatus         string           `json:"orderStatus"`
+		Instruction         PlaceInstruction `json:"instruction"`
+		BetID               string           `json:"betId"`
+		PlacedDate          string           `json:"placedDate"`
+		SizeMatched         float32          `json:"sizeMatched"`
+		AveragePriceMatched float32          `json:"averagePriceMatched"`
 	}
 
 	PriceLadderDescription struct {
