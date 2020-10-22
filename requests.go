@@ -52,3 +52,12 @@ type ListRunnerBookRequest struct {
 	MatchedSince                  string          `json:"matchedSince,omitempty"`
 	BetIDs                        []string        `json:"betids,omitempty"`
 }
+
+type PlaceOrderRequest struct {
+	MarketID            string             `json:"marketId"`
+	Instructions        []PlaceInstruction `json:"instructions"`
+	CustomerRef         string             `json:"customerRef,omitempty"`
+	MarketVersion       float32            `json:"marketVersion,omitempty"`
+	CustomerStrategyRef string             `json:"customerStrategyRef,omitempty"`
+	Async               bool               `json:"async,omitempty"`
+}

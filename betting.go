@@ -11,6 +11,7 @@ const (
 	listMarketBook      = "/listMarketBook/"
 	listMarketCatalogue = "/listMarketCatalogue/"
 	listRunnerBook      = "/listRunnerBook/"
+	placeOrders         = "/placeOrders/"
 )
 
 // ListCompetition returns a slice of Competition struct (i.e., World Cup 2013) associated with the markets
@@ -90,4 +91,16 @@ func (c *Client) ListRunnerBook(ctx context.Context, req ListRunnerBookRequest) 
 	}
 
 	return response, nil
+}
+
+// PlaceOrder executes a PlaceOrderRequest and returns a PlaceExecutionReport detailing the outcome of the
+// transaction
+func (c *Client) PlaceOrder(ctx context.Context, req PlaceOrderRequest) (*PlaceExecutionReport, error) {
+	var response PlaceExecutionReport
+
+	if err := c.getResource(ctx, c.BaseURLs.Betting+placeOrders, req, &response); err != nil {
+		return nil, err
+	}
+
+	return &response, nil
 }
