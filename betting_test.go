@@ -360,7 +360,7 @@ func TestClient_ListRunnerBook(t *testing.T) {
 func TestClient_PlaceOrder(t *testing.T) {
 	t.Run("returns a PlaceExecutionReport struct", func(t *testing.T) {
 		url := "https://test/betting/rest/v1.0/placeOrders/"
-		server := mockResponseServer(t, placeOrderResponse, 200, url)
+		server := mockResponseServer(t, placeOrderSuccessResponse, 200, url)
 
 		client := Client{
 			HTTPClient:  server,
@@ -398,6 +398,49 @@ func TestClient_PlaceOrder(t *testing.T) {
 		a.Equal(float32(1.62), report.InstructionReports[0].AveragePriceMatched)
 		a.Equal(float32(8.24), report.InstructionReports[0].SizeMatched)
 		a.Equal("EXECUTION_COMPLETE", report.InstructionReports[0].OrderStatus)
+		a.Equal(instruction, report.InstructionReports[0].Instruction)
+	})
+
+	t.Run("returns a failing PlaceExecutionReport struct", func(t *testing.T) {
+		url := "https://test/betting/rest/v1.0/placeOrders/"
+		server := mockResponseServer(t, placeOrderFailureResponse, 200, url)
+
+		client := Client{
+			HTTPClient:  server,
+			Credentials: creds,
+			BaseURLs:    base,
+		}
+
+		report, err := client.PlaceOrder(context.Background(), PlaceOrderRequest{})
+
+		if err != nil {
+			t.Fatalf("Test failed, expected nil, got %s", err.Error())
+		}
+
+		a := assert.New(t)
+
+		instruction := PlaceInstruction{
+			OrderType:          "LIMIT",
+			SelectionID:        47972,
+			Side:               "BACK",
+			LimitOrder:         LimitOrder{
+				Size: 2.0,
+				Price: 39.65,
+				PersistenceType: "PERSIST",
+			},
+		}
+
+		a.Equal("1.173885527", report.MarketID)
+		a.Equal("FAILURE", report.Status)
+		a.Equal("BET_ACTION_ERROR", report.ErrorCode)
+		a.Empty(report.CustomerRef)
+		a.Equal("FAILURE", report.InstructionReports[0].Status)
+		a.Equal("INVALID_ODDS", report.InstructionReports[0].ErrorCode)
+		a.Empty(report.InstructionReports[0].BetID)
+		a.Empty(report.InstructionReports[0].PlacedDate)
+		a.Empty(report.InstructionReports[0].AveragePriceMatched)
+		a.Empty(report.InstructionReports[0].SizeMatched)
+		a.Empty(report.InstructionReports[0].OrderStatus)
 		a.Equal(instruction, report.InstructionReports[0].Instruction)
 	})
 
@@ -601,7 +644,7 @@ var listRunnerResponse = `[
   }
 ]`
 
-var placeOrderResponse = `{
+var placeOrderSuccessResponse = `{
   "status": "SUCCESS",
   "marketId": "1.173957583",
   "instructionReports": [
@@ -622,6 +665,28 @@ var placeOrderResponse = `{
       "averagePriceMatched": 1.62,
       "sizeMatched": 8.24,
       "orderStatus": "EXECUTION_COMPLETE"
+    }
+  ]
+}`
+
+var placeOrderFailureResponse = `{
+  "status": "FAILURE",
+  "errorCode": "BET_ACTION_ERROR",
+  "marketId": "1.173885527",
+  "instructionReports": [
+    {
+      "status": "FAILURE",
+      "errorCode": "INVALID_ODDS",
+      "instruction": {
+        "selectionId": 47972,
+        "limitOrder": {
+          "size": 2.0,
+          "price": 39.65,
+          "persistenceType": "PERSIST"
+        },
+        "orderType": "LIMIT",
+        "side": "BACK"
+      }
     }
   ]
 }`
