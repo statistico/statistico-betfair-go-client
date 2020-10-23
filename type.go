@@ -205,12 +205,12 @@ type (
 	PlaceInstructionReport struct {
 		Status              string           `json:"status"`
 		ErrorCode           string           `json:"errorCode,omitempty"`
-		OrderStatus         string           `json:"orderStatus"`
+		OrderStatus         string           `json:"orderStatus,omitempty"`
 		Instruction         PlaceInstruction `json:"instruction"`
-		BetID               string           `json:"betId"`
-		PlacedDate          string           `json:"placedDate"`
-		SizeMatched         float32          `json:"sizeMatched"`
-		AveragePriceMatched float32          `json:"averagePriceMatched"`
+		BetID               string           `json:"betId,omitempty"`
+		PlacedDate          string           `json:"placedDate,omitempty"`
+		SizeMatched         float32          `json:"sizeMatched,omitempty"`
+		AveragePriceMatched float32          `json:"averagePriceMatched,omitempty"`
 	}
 
 	PriceLadderDescription struct {
