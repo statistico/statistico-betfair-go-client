@@ -8,7 +8,8 @@ import (
 	"testing"
 )
 
-var creds = InteractiveCredentials{
+
+var credentials = InteractiveCredentials{
 	Username: "joe",
 	Password: "password",
 	Key:      "key-secret",
