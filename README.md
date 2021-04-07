@@ -29,16 +29,9 @@ func main() {
         Key :       "thUjaEEdBy",
     }
     
-    url := betfair.BaseURLs{
-        Accounts:  "https://api.betfair.com/exchange/account/rest/v1.0/",
-        Betting:   "https://api.betfair.com/exchange/betting/rest/v1.0/",
-        Login:     "https://identitysso.betfair.com/api/login",
-    }
-
     client := betfair.Client{
         HTTPClient:    *http.Client{},
         Credentials:   creds,
-        BaseURLs:      url,
     }   
     
     competitions, err := client.ListCompetitions(context.Background(), ListCompetitionsRequest{}) 
