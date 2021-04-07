@@ -19,7 +19,7 @@ const (
 func (c *Client) ListCompetitions(ctx context.Context, req ListCompetitionsRequest) ([]CompetitionResult, error) {
 	var response []CompetitionResult
 
-	if err := c.getResource(ctx, c.BaseURLs.Betting+listCompetitions, req, &response); err != nil {
+	if err := c.getResource(ctx, BettingURL+listCompetitions, req, &response); err != nil {
 		return nil, err
 	}
 
@@ -31,7 +31,7 @@ func (c *Client) ListCompetitions(ctx context.Context, req ListCompetitionsReque
 func (c *Client) ListEventTypes(ctx context.Context, req ListEventTypesRequest) ([]EventTypeResult, error) {
 	var response []EventTypeResult
 
-	if err := c.getResource(ctx, c.BaseURLs.Betting+listEventTypes, req, &response); err != nil {
+	if err := c.getResource(ctx, BettingURL+listEventTypes, req, &response); err != nil {
 		return nil, err
 	}
 
@@ -43,7 +43,7 @@ func (c *Client) ListEventTypes(ctx context.Context, req ListEventTypesRequest) 
 func (c *Client) ListEvents(ctx context.Context, req ListEventsRequest) ([]EventResult, error) {
 	var response []EventResult
 
-	if err := c.getResource(ctx, c.BaseURLs.Betting+listEvents, req, &response); err != nil {
+	if err := c.getResource(ctx, BettingURL+listEvents, req, &response); err != nil {
 		return nil, err
 	}
 
@@ -58,7 +58,7 @@ func (c *Client) ListEvents(ctx context.Context, req ListEventsRequest) ([]Event
 func (c *Client) ListMarketCatalogue(ctx context.Context, req ListMarketCatalogueRequest) ([]MarketCatalogue, error) {
 	var response []MarketCatalogue
 
-	if err := c.getResource(ctx, c.BaseURLs.Betting+listMarketCatalogue, req, &response); err != nil {
+	if err := c.getResource(ctx, BettingURL+listMarketCatalogue, req, &response); err != nil {
 		return nil, err
 	}
 
@@ -73,7 +73,7 @@ func (c *Client) ListMarketCatalogue(ctx context.Context, req ListMarketCatalogu
 func (c *Client) ListMarketBook(ctx context.Context, req ListMarketBookRequest) ([]MarketBook, error) {
 	var response []MarketBook
 
-	if err := c.getResource(ctx, c.BaseURLs.Betting+listMarketBook, req, &response); err != nil {
+	if err := c.getResource(ctx, BettingURL+listMarketBook, req, &response); err != nil {
 		return nil, err
 	}
 
@@ -86,7 +86,7 @@ func (c *Client) ListMarketBook(ctx context.Context, req ListMarketBookRequest) 
 func (c *Client) ListRunnerBook(ctx context.Context, req ListRunnerBookRequest) ([]MarketBook, error) {
 	var response []MarketBook
 
-	if err := c.getResource(ctx, c.BaseURLs.Betting+listRunnerBook, req, &response); err != nil {
+	if err := c.getResource(ctx, BettingURL+listRunnerBook, req, &response); err != nil {
 		return nil, err
 	}
 
@@ -98,7 +98,7 @@ func (c *Client) ListRunnerBook(ctx context.Context, req ListRunnerBookRequest) 
 func (c *Client) PlaceOrder(ctx context.Context, req PlaceOrderRequest) (*PlaceExecutionReport, error) {
 	var response PlaceExecutionReport
 
-	if err := c.getResource(ctx, c.BaseURLs.Betting+placeOrders, req, &response); err != nil {
+	if err := c.getResource(ctx, BettingURL+placeOrders, req, &response); err != nil {
 		return nil, err
 	}
 

@@ -13,7 +13,7 @@ const (
 func (c *Client) AccountFunds(ctx context.Context) (*AccountFunds, error) {
 	var response AccountFunds
 
-	if err := c.getResource(ctx, c.BaseURLs.Accounts+getAccountFunds, nil, &response); err != nil {
+	if err := c.getResource(ctx, AccountsURL+getAccountFunds, nil, &response); err != nil {
 		return nil, err
 	}
 
@@ -24,7 +24,7 @@ func (c *Client) AccountFunds(ctx context.Context) (*AccountFunds, error) {
 func (c *Client) AccountDetails(ctx context.Context) (*AccountDetails, error) {
 	var response AccountDetails
 
-	if err := c.getResource(ctx, c.BaseURLs.Accounts+getAccountDetails, nil, &response); err != nil {
+	if err := c.getResource(ctx, AccountsURL+getAccountDetails, nil, &response); err != nil {
 		return nil, err
 	}
 

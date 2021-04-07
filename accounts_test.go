@@ -8,13 +8,12 @@ import (
 
 func TestClient_AccountDetails(t *testing.T) {
 	t.Run("returns account details struct", func(t *testing.T) {
-		url := "https://test/account/rest/v1.0/getAccountDetails/"
+		url := "https://api.betfair.com/exchange/account/rest/v1.0/getAccountDetails/"
 		server := mockResponseServer(t, accountDetailsResponse, 200, url)
 
 		client := Client{
 			HTTPClient:  server,
 			Credentials: creds,
-			BaseURLs:    base,
 		}
 
 		details, err := client.AccountDetails(context.Background())
@@ -35,13 +34,12 @@ func TestClient_AccountDetails(t *testing.T) {
 	})
 
 	t.Run("gracefully handles error response", func(t *testing.T) {
-		url := "https://test/account/rest/v1.0/getAccountDetails/"
+		url := "https://api.betfair.com/exchange/account/rest/v1.0/getAccountDetails/"
 		server := mockResponseServer(t, errorAccountsResponse, 400, url)
 
 		client := Client{
 			HTTPClient:  server,
 			Credentials: creds,
-			BaseURLs:    base,
 		}
 
 		details, err := client.AccountDetails(context.Background())
@@ -58,13 +56,12 @@ func TestClient_AccountDetails(t *testing.T) {
 
 func TestClient_AccountFunds(t *testing.T) {
 	t.Run("returns account funds struct", func(t *testing.T) {
-		url := "https://test/account/rest/v1.0/getAccountFunds/"
+		url := "https://api.betfair.com/exchange/account/rest/v1.0/getAccountFunds/"
 		server := mockResponseServer(t, accountFundsResponse, 200, url)
 
 		client := Client{
 			HTTPClient:  server,
 			Credentials: creds,
-			BaseURLs:    base,
 		}
 
 		funds, err := client.AccountFunds(context.Background())
@@ -83,13 +80,12 @@ func TestClient_AccountFunds(t *testing.T) {
 	})
 
 	t.Run("gracefully handles error response", func(t *testing.T) {
-		url := "https://test/account/rest/v1.0/getAccountFunds/"
+		url := "https://api.betfair.com/exchange/account/rest/v1.0/getAccountFunds/"
 		server := mockResponseServer(t, errorAccountsResponse, 400, url)
 
 		client := Client{
 			HTTPClient:  server,
 			Credentials: creds,
-			BaseURLs:    base,
 		}
 
 		funds, err := client.AccountFunds(context.Background())
