@@ -11,10 +11,7 @@ func TestClient_ListCompetitions(t *testing.T) {
 		url := "https://api.betfair.com/exchange/betting/rest/v1.0/listCompetitions/"
 		server := mockResponseServer(t, competitionsResponse, 200, url)
 
-		client := Client{
-			HTTPClient:  server,
-			Credentials: creds,
-		}
+		client := NewClient(server, credentials)
 
 		competitions, err := client.ListCompetitions(context.Background(), ListCompetitionsRequest{})
 
@@ -38,10 +35,7 @@ func TestClient_ListCompetitions(t *testing.T) {
 		url := "https://api.betfair.com/exchange/betting/rest/v1.0/listCompetitions/"
 		server := mockResponseServer(t, errorBettingResponse, 400, url)
 
-		client := Client{
-			HTTPClient:  server,
-			Credentials: creds,
-		}
+		client := NewClient(server, credentials)
 
 		competitions, err := client.ListCompetitions(context.Background(), ListCompetitionsRequest{})
 
@@ -60,10 +54,7 @@ func TestClient_ListEventTypes(t *testing.T) {
 		url := "https://api.betfair.com/exchange/betting/rest/v1.0/listEventTypes/"
 		server := mockResponseServer(t, eventTypesResponse, 200, url)
 
-		client := Client{
-			HTTPClient:  server,
-			Credentials: creds,
-		}
+		client := NewClient(server, credentials)
 
 		types, err := client.ListEventTypes(context.Background(), ListEventTypesRequest{})
 
@@ -85,10 +76,7 @@ func TestClient_ListEventTypes(t *testing.T) {
 		url := "https://api.betfair.com/exchange/betting/rest/v1.0/listEventTypes/"
 		server := mockResponseServer(t, errorBettingResponse, 400, url)
 
-		client := Client{
-			HTTPClient:  server,
-			Credentials: creds,
-		}
+		client := NewClient(server, credentials)
 
 		types, err := client.ListEventTypes(context.Background(), ListEventTypesRequest{})
 
@@ -107,10 +95,7 @@ func TestClient_ListEvents(t *testing.T) {
 		url := "https://api.betfair.com/exchange/betting/rest/v1.0/listEvents/"
 		server := mockResponseServer(t, eventsResponse, 200, url)
 
-		client := Client{
-			HTTPClient:  server,
-			Credentials: creds,
-		}
+		client := NewClient(server, credentials)
 
 		events, err := client.ListEvents(context.Background(), ListEventsRequest{})
 
@@ -138,10 +123,7 @@ func TestClient_ListEvents(t *testing.T) {
 		url := "https://api.betfair.com/exchange/betting/rest/v1.0/listEvents/"
 		server := mockResponseServer(t, errorBettingResponse, 400, url)
 
-		client := Client{
-			HTTPClient:  server,
-			Credentials: creds,
-		}
+		client := NewClient(server, credentials)
 
 		events, err := client.ListEvents(context.Background(), ListEventsRequest{})
 
@@ -160,10 +142,7 @@ func TestClient_ListMarketCatalogue(t *testing.T) {
 		url := "https://api.betfair.com/exchange/betting/rest/v1.0/listMarketCatalogue/"
 		server := mockResponseServer(t, marketCatalogueResponse, 200, url)
 
-		client := Client{
-			HTTPClient:  server,
-			Credentials: creds,
-		}
+		client := NewClient(server, credentials)
 
 		catalogue, err := client.ListMarketCatalogue(context.Background(), ListMarketCatalogueRequest{})
 
@@ -185,10 +164,7 @@ func TestClient_ListMarketCatalogue(t *testing.T) {
 		url := "https://api.betfair.com/exchange/betting/rest/v1.0/listMarketCatalogue/"
 		server := mockResponseServer(t, errorBettingResponse, 400, url)
 
-		client := Client{
-			HTTPClient:  server,
-			Credentials: creds,
-		}
+		client := NewClient(server, credentials)
 
 		catalogue, err := client.ListMarketCatalogue(context.Background(), ListMarketCatalogueRequest{})
 
@@ -207,10 +183,7 @@ func TestClient_ListMarketBook(t *testing.T) {
 		url := "https://api.betfair.com/exchange/betting/rest/v1.0/listMarketBook/"
 		server := mockResponseServer(t, marketBookResponse, 200, url)
 
-		client := Client{
-			HTTPClient:  server,
-			Credentials: creds,
-		}
+		client := NewClient(server, credentials)
 
 		book, err := client.ListMarketBook(context.Background(), ListMarketBookRequest{})
 
@@ -252,10 +225,7 @@ func TestClient_ListMarketBook(t *testing.T) {
 		url := "https://api.betfair.com/exchange/betting/rest/v1.0/listMarketBook/"
 		server := mockResponseServer(t, errorBettingResponse, 400, url)
 
-		client := Client{
-			HTTPClient:  server,
-			Credentials: creds,
-		}
+		client := NewClient(server, credentials)
 
 		book, err := client.ListMarketBook(context.Background(), ListMarketBookRequest{})
 
@@ -274,10 +244,7 @@ func TestClient_ListRunnerBook(t *testing.T) {
 		url := "https://api.betfair.com/exchange/betting/rest/v1.0/listRunnerBook/"
 		server := mockResponseServer(t, listRunnerResponse, 200, url)
 
-		client := Client{
-			HTTPClient:  server,
-			Credentials: creds,
-		}
+		client := NewClient(server, credentials)
 
 		book, err := client.ListRunnerBook(context.Background(), ListRunnerBookRequest{})
 
@@ -328,10 +295,7 @@ func TestClient_ListRunnerBook(t *testing.T) {
 		url := "https://api.betfair.com/exchange/betting/rest/v1.0/listRunnerBook/"
 		server := mockResponseServer(t, errorBettingResponse, 400, url)
 
-		client := Client{
-			HTTPClient:  server,
-			Credentials: creds,
-		}
+		client := NewClient(server, credentials)
 
 		book, err := client.ListRunnerBook(context.Background(), ListRunnerBookRequest{})
 
@@ -350,10 +314,7 @@ func TestClient_PlaceOrder(t *testing.T) {
 		url := "https://api.betfair.com/exchange/betting/rest/v1.0/placeOrders/"
 		server := mockResponseServer(t, placeOrderSuccessResponse, 200, url)
 
-		client := Client{
-			HTTPClient:  server,
-			Credentials: creds,
-		}
+		client := NewClient(server, credentials)
 
 		report, err := client.PlaceOrder(context.Background(), PlaceOrderRequest{})
 
@@ -392,10 +353,7 @@ func TestClient_PlaceOrder(t *testing.T) {
 		url := "https://api.betfair.com/exchange/betting/rest/v1.0/placeOrders/"
 		server := mockResponseServer(t, placeOrderFailureResponse, 200, url)
 
-		client := Client{
-			HTTPClient:  server,
-			Credentials: creds,
-		}
+		client := NewClient(server, credentials)
 
 		report, err := client.PlaceOrder(context.Background(), PlaceOrderRequest{})
 
@@ -434,10 +392,7 @@ func TestClient_PlaceOrder(t *testing.T) {
 		url := "https://api.betfair.com/exchange/betting/rest/v1.0/placeOrders/"
 		server := mockResponseServer(t, errorBettingResponse, 400, url)
 
-		client := Client{
-			HTTPClient:  server,
-			Credentials: creds,
-		}
+		client := NewClient(server, credentials)
 
 		report, err := client.PlaceOrder(context.Background(), PlaceOrderRequest{})
 

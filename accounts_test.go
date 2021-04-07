@@ -11,10 +11,7 @@ func TestClient_AccountDetails(t *testing.T) {
 		url := "https://api.betfair.com/exchange/account/rest/v1.0/getAccountDetails/"
 		server := mockResponseServer(t, accountDetailsResponse, 200, url)
 
-		client := Client{
-			HTTPClient:  server,
-			Credentials: creds,
-		}
+		client := NewClient(server, credentials)
 
 		details, err := client.AccountDetails(context.Background())
 
@@ -37,10 +34,7 @@ func TestClient_AccountDetails(t *testing.T) {
 		url := "https://api.betfair.com/exchange/account/rest/v1.0/getAccountDetails/"
 		server := mockResponseServer(t, errorAccountsResponse, 400, url)
 
-		client := Client{
-			HTTPClient:  server,
-			Credentials: creds,
-		}
+		client := NewClient(server, credentials)
 
 		details, err := client.AccountDetails(context.Background())
 
@@ -59,10 +53,7 @@ func TestClient_AccountFunds(t *testing.T) {
 		url := "https://api.betfair.com/exchange/account/rest/v1.0/getAccountFunds/"
 		server := mockResponseServer(t, accountFundsResponse, 200, url)
 
-		client := Client{
-			HTTPClient:  server,
-			Credentials: creds,
-		}
+		client := NewClient(server, credentials)
 
 		funds, err := client.AccountFunds(context.Background())
 
@@ -83,10 +74,7 @@ func TestClient_AccountFunds(t *testing.T) {
 		url := "https://api.betfair.com/exchange/account/rest/v1.0/getAccountFunds/"
 		server := mockResponseServer(t, errorAccountsResponse, 400, url)
 
-		client := Client{
-			HTTPClient:  server,
-			Credentials: creds,
-		}
+		client := NewClient(server, credentials)
 
 		funds, err := client.AccountFunds(context.Background())
 
