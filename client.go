@@ -19,7 +19,6 @@ const (
 type Client struct {
 	HTTPClient  *http.Client
 	Credentials InteractiveCredentials
-	BaseURLs    BaseURLs
 }
 
 type InteractiveCredentials struct {
@@ -27,12 +26,6 @@ type InteractiveCredentials struct {
 	Password string
 	Key      string
 	Token    string
-}
-
-type BaseURLs struct {
-	Accounts string
-	Betting  string
-	Login    string
 }
 
 type session struct {
@@ -45,7 +38,7 @@ type session struct {
 func (c *Client) createSession() error {
 	body := fmt.Sprintf("username=%s&password=%s", c.Credentials.Username, c.Credentials.Password)
 
-	req, err := http.NewRequest(http.MethodPost, c.BaseURLs.Login, strings.NewReader(body))
+	req, err := http.NewRequest(http.MethodPost, LoginURL, strings.NewReader(body))
 
 	if err != nil {
 		return err

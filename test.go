@@ -8,12 +8,6 @@ import (
 	"testing"
 )
 
-var base = BaseURLs{
-	Accounts: "https://test/account/rest/v1.0",
-	Betting:  "https://test/betting/rest/v1.0",
-	Login:    "https://test/login",
-}
-
 var creds = InteractiveCredentials{
 	Username: "joe",
 	Password: "password",
