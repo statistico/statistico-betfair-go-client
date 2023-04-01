@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/golang:1.19
+      - image: circleci/golang:1.19.7
     steps:
       - checkout
       - run:
