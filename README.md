@@ -1,7 +1,7 @@
 # Statistico Betfair Go Client
 
 [![Documentation](https://godoc.org/github.com/statistico/statistico-betfair-go-client?status.svg)](http://godoc.org/github.com/statistico/statistico-betfair-go-client)
-[![CircleCI](https://circleci.com/gh/statistico/statistico-betfair-go-client/tree/master.svg?style=shield)](https://circleci.com/gh/statistico/statistico-betfair-go-client/tree/master)
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/statistico/statistico-betfair-go-client/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/statistico/statistico-betfair-go-client/tree/master)
 
 This library is a Golang wrapper around the Betfair Accounts and Betting API. Full documentation and API reference can be found here:
 
@@ -28,13 +28,14 @@ func main() {
         Password:   "my-secret-password-1",
         Key :       "thUjaEEdBy",
     }
+	
+	client := *http.Client{}
+	
+	store := myimplementation.Store{}
     
-    client := betfair.Client{
-        HTTPClient:    *http.Client{},
-        Credentials:   creds,
-    }   
+    bfClient := betfair.NewClient(client, creds, store) 
     
-    competitions, err := client.ListCompetitions(context.Background(), ListCompetitionsRequest{}) 
+    competitions, err := bfClient.ListCompetitions(context.Background(), ListCompetitionsRequest{}) 
 
     if err != nil {
         fmt.Printf("%s\n", err)

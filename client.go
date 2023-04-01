@@ -62,13 +62,13 @@ type Client interface {
 type client struct {
 	HTTPClient  *http.Client
 	Credentials InteractiveCredentials
+	Store       Store
 }
 
 type InteractiveCredentials struct {
 	Username string
 	Password string
 	Key      string
-	Token    string
 }
 
 type session struct {
@@ -78,13 +78,13 @@ type session struct {
 	Error   string `json:"error"`
 }
 
-func (c *client) createSession() error {
+func (c *client) createSession(ctx context.Context) (string, error) {
 	body := fmt.Sprintf("username=%s&password=%s", c.Credentials.Username, c.Credentials.Password)
 
 	req, err := http.NewRequest(http.MethodPost, LoginURL, strings.NewReader(body))
 
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	req.Header.Set("Accept", "application/json")
@@ -94,22 +94,26 @@ func (c *client) createSession() error {
 	resp, err := c.HTTPClient.Do(req)
 
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	var session session
 
 	if err := json.NewDecoder(resp.Body).Decode(&session); err != nil {
-		return err
+		return "", err
 	}
 
 	if session.Status != "SUCCESS" {
-		return fmt.Errorf("error calling client %s", session.Error)
+		return "", fmt.Errorf("error calling client %s", session.Error)
 	}
 
-	c.Credentials.Token = session.Token
+	err = c.Store.Set(ctx, "betfair-session-token", session.Token)
 
-	return nil
+	if err != nil {
+		return "", fmt.Errorf("error setting session token in store: %s", err.Error())
+	}
+
+	return session.Token, nil
 }
 
 func (c *client) getResource(ctx context.Context, url string, req interface{}, res interface{}) error {
@@ -137,7 +141,7 @@ func (c *client) buildRequest(ctx context.Context, url string, body interface{})
 
 	req = req.WithContext(ctx)
 
-	if err := c.addHeaders(req); err != nil {
+	if err := c.addHeaders(ctx, req); err != nil {
 		return nil, err
 	}
 
@@ -160,18 +164,26 @@ func (c *client) do(req *http.Request, resp interface{}) error {
 	return parseJSONResponseBody(response.Body, resp)
 }
 
-func (c *client) addHeaders(req *http.Request) error {
+func (c *client) addHeaders(ctx context.Context, req *http.Request) error {
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("X-Application", c.Credentials.Key)
 
-	if c.Credentials.Token == "" {
-		if err := c.createSession(); err != nil {
-			return err
+	token, err := c.Store.Get(ctx, "betfair-session-token")
+
+	if err != nil {
+		return fmt.Errorf("error fetching session token from store: %s", err.Error())
+	}
+
+	if token == "" {
+		token, err = c.createSession(ctx)
+
+		if err != nil {
+			return fmt.Errorf("error creating session token: %s", err.Error())
 		}
 	}
 
-	req.Header.Set("X-Authentication", c.Credentials.Token)
+	req.Header.Set("X-Authentication", token)
 
 	return nil
 }
@@ -205,9 +217,10 @@ func parseJSONResponseBody(body io.ReadCloser, response interface{}) error {
 	return nil
 }
 
-func NewClient(h *http.Client, c InteractiveCredentials) Client {
+func NewClient(h *http.Client, c InteractiveCredentials, s Store) Client {
 	return &client{
 		HTTPClient:  h,
 		Credentials: c,
+		Store:       s,
 	}
 }
