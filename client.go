@@ -179,7 +179,7 @@ func (c *client) addHeaders(ctx context.Context, req *http.Request) error {
 		token, err = c.createSession(ctx)
 
 		if err != nil {
-			return fmt.Errorf("error creation session token: %s", err.Error())
+			return fmt.Errorf("error creating session token: %s", err.Error())
 		}
 	}
 
