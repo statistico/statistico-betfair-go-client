@@ -10,10 +10,15 @@ func TestClient_AccountDetails(t *testing.T) {
 	t.Run("returns account details struct", func(t *testing.T) {
 		url := "https://api.betfair.com/exchange/account/rest/v1.0/getAccountDetails/"
 		server := mockResponseServer(t, accountDetailsResponse, 200, url)
+		store := new(MockStore)
 
-		client := NewClient(server, credentials)
+		ctx := context.Background()
 
-		details, err := client.AccountDetails(context.Background())
+		client := NewClient(server, credentials, store)
+
+		store.On("Get", ctx, "betfair-session-token").Return("token", nil)
+
+		details, err := client.AccountDetails(ctx)
 
 		if err != nil {
 			t.Fatalf("Test failed, expected nil, got %s", err.Error())
@@ -33,10 +38,15 @@ func TestClient_AccountDetails(t *testing.T) {
 	t.Run("gracefully handles error response", func(t *testing.T) {
 		url := "https://api.betfair.com/exchange/account/rest/v1.0/getAccountDetails/"
 		server := mockResponseServer(t, errorAccountsResponse, 400, url)
+		store := new(MockStore)
 
-		client := NewClient(server, credentials)
+		ctx := context.Background()
 
-		details, err := client.AccountDetails(context.Background())
+		client := NewClient(server, credentials, store)
+
+		store.On("Get", ctx, "betfair-session-token").Return("token", nil)
+
+		details, err := client.AccountDetails(ctx)
 
 		if details != nil {
 			t.Fatalf("Test failed, expected nil, got %+v", details)
@@ -52,10 +62,15 @@ func TestClient_AccountFunds(t *testing.T) {
 	t.Run("returns account funds struct", func(t *testing.T) {
 		url := "https://api.betfair.com/exchange/account/rest/v1.0/getAccountFunds/"
 		server := mockResponseServer(t, accountFundsResponse, 200, url)
+		store := new(MockStore)
 
-		client := NewClient(server, credentials)
+		ctx := context.Background()
 
-		funds, err := client.AccountFunds(context.Background())
+		client := NewClient(server, credentials, store)
+
+		store.On("Get", ctx, "betfair-session-token").Return("token", nil)
+
+		funds, err := client.AccountFunds(ctx)
 
 		if err != nil {
 			t.Fatalf("Test failed, expected nil, got %s", err.Error())
@@ -73,10 +88,15 @@ func TestClient_AccountFunds(t *testing.T) {
 	t.Run("gracefully handles error response", func(t *testing.T) {
 		url := "https://api.betfair.com/exchange/account/rest/v1.0/getAccountFunds/"
 		server := mockResponseServer(t, errorAccountsResponse, 400, url)
+		store := new(MockStore)
 
-		client := NewClient(server, credentials)
+		ctx := context.Background()
 
-		funds, err := client.AccountFunds(context.Background())
+		client := NewClient(server, credentials, store)
+
+		store.On("Get", ctx, "betfair-session-token").Return("token", nil)
+
+		funds, err := client.AccountFunds(ctx)
 
 		if funds != nil {
 			t.Fatalf("Test failed, expected nil, got %+v", funds)

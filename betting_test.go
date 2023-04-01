@@ -10,10 +10,15 @@ func TestClient_ListCompetitions(t *testing.T) {
 	t.Run("returns a slice of competition result struct", func(t *testing.T) {
 		url := "https://api.betfair.com/exchange/betting/rest/v1.0/listCompetitions/"
 		server := mockResponseServer(t, competitionsResponse, 200, url)
+		store := new(MockStore)
 
-		client := NewClient(server, credentials)
+		ctx := context.Background()
 
-		competitions, err := client.ListCompetitions(context.Background(), ListCompetitionsRequest{})
+		client := NewClient(server, credentials, store)
+
+		store.On("Get", ctx, "betfair-session-token").Return("token", nil)
+
+		competitions, err := client.ListCompetitions(ctx, ListCompetitionsRequest{})
 
 		if err != nil {
 			t.Fatalf("Test failed, expected nil, got %s", err.Error())
@@ -34,10 +39,15 @@ func TestClient_ListCompetitions(t *testing.T) {
 	t.Run("gracefully handles error response", func(t *testing.T) {
 		url := "https://api.betfair.com/exchange/betting/rest/v1.0/listCompetitions/"
 		server := mockResponseServer(t, errorBettingResponse, 400, url)
+		store := new(MockStore)
 
-		client := NewClient(server, credentials)
+		ctx := context.Background()
 
-		competitions, err := client.ListCompetitions(context.Background(), ListCompetitionsRequest{})
+		client := NewClient(server, credentials, store)
+
+		store.On("Get", ctx, "betfair-session-token").Return("token", nil)
+
+		competitions, err := client.ListCompetitions(ctx, ListCompetitionsRequest{})
 
 		if competitions != nil {
 			t.Fatalf("Test failed, expected nil, got %+v", competitions)
@@ -53,10 +63,15 @@ func TestClient_ListEventTypes(t *testing.T) {
 	t.Run("returns a slice of event type result", func(t *testing.T) {
 		url := "https://api.betfair.com/exchange/betting/rest/v1.0/listEventTypes/"
 		server := mockResponseServer(t, eventTypesResponse, 200, url)
+		store := new(MockStore)
 
-		client := NewClient(server, credentials)
+		ctx := context.Background()
 
-		types, err := client.ListEventTypes(context.Background(), ListEventTypesRequest{})
+		client := NewClient(server, credentials, store)
+
+		store.On("Get", ctx, "betfair-session-token").Return("token", nil)
+
+		types, err := client.ListEventTypes(ctx, ListEventTypesRequest{})
 
 		if err != nil {
 			t.Fatalf("Test failed, expected nil, got %s", err.Error())
@@ -75,10 +90,15 @@ func TestClient_ListEventTypes(t *testing.T) {
 	t.Run("gracefully handles error response", func(t *testing.T) {
 		url := "https://api.betfair.com/exchange/betting/rest/v1.0/listEventTypes/"
 		server := mockResponseServer(t, errorBettingResponse, 400, url)
+		store := new(MockStore)
 
-		client := NewClient(server, credentials)
+		ctx := context.Background()
 
-		types, err := client.ListEventTypes(context.Background(), ListEventTypesRequest{})
+		client := NewClient(server, credentials, store)
+
+		store.On("Get", ctx, "betfair-session-token").Return("token", nil)
+
+		types, err := client.ListEventTypes(ctx, ListEventTypesRequest{})
 
 		if types != nil {
 			t.Fatalf("Test failed, expected nil, got %+v", types)
@@ -94,10 +114,15 @@ func TestClient_ListEvents(t *testing.T) {
 	t.Run("returns a slice of event result struct", func(t *testing.T) {
 		url := "https://api.betfair.com/exchange/betting/rest/v1.0/listEvents/"
 		server := mockResponseServer(t, eventsResponse, 200, url)
+		store := new(MockStore)
 
-		client := NewClient(server, credentials)
+		ctx := context.Background()
 
-		events, err := client.ListEvents(context.Background(), ListEventsRequest{})
+		client := NewClient(server, credentials, store)
+
+		store.On("Get", ctx, "betfair-session-token").Return("token", nil)
+
+		events, err := client.ListEvents(ctx, ListEventsRequest{})
 
 		if err != nil {
 			t.Fatalf("Test failed, expected nil, got %s", err.Error())
@@ -122,10 +147,15 @@ func TestClient_ListEvents(t *testing.T) {
 	t.Run("gracefully handles error response", func(t *testing.T) {
 		url := "https://api.betfair.com/exchange/betting/rest/v1.0/listEvents/"
 		server := mockResponseServer(t, errorBettingResponse, 400, url)
+		store := new(MockStore)
 
-		client := NewClient(server, credentials)
+		ctx := context.Background()
 
-		events, err := client.ListEvents(context.Background(), ListEventsRequest{})
+		client := NewClient(server, credentials, store)
+
+		store.On("Get", ctx, "betfair-session-token").Return("token", nil)
+
+		events, err := client.ListEvents(ctx, ListEventsRequest{})
 
 		if events != nil {
 			t.Fatalf("Test failed, expected nil, got %+v", events)
@@ -141,10 +171,15 @@ func TestClient_ListMarketCatalogue(t *testing.T) {
 	t.Run("returns a slice of market catalogue struct", func(t *testing.T) {
 		url := "https://api.betfair.com/exchange/betting/rest/v1.0/listMarketCatalogue/"
 		server := mockResponseServer(t, marketCatalogueResponse, 200, url)
+		store := new(MockStore)
 
-		client := NewClient(server, credentials)
+		ctx := context.Background()
 
-		catalogue, err := client.ListMarketCatalogue(context.Background(), ListMarketCatalogueRequest{})
+		client := NewClient(server, credentials, store)
+
+		store.On("Get", ctx, "betfair-session-token").Return("token", nil)
+
+		catalogue, err := client.ListMarketCatalogue(ctx, ListMarketCatalogueRequest{})
 
 		if err != nil {
 			t.Fatalf("Test failed, expected nil, got %s", err.Error())
@@ -163,10 +198,15 @@ func TestClient_ListMarketCatalogue(t *testing.T) {
 	t.Run("gracefully handles error response", func(t *testing.T) {
 		url := "https://api.betfair.com/exchange/betting/rest/v1.0/listMarketCatalogue/"
 		server := mockResponseServer(t, errorBettingResponse, 400, url)
+		store := new(MockStore)
 
-		client := NewClient(server, credentials)
+		ctx := context.Background()
 
-		catalogue, err := client.ListMarketCatalogue(context.Background(), ListMarketCatalogueRequest{})
+		client := NewClient(server, credentials, store)
+
+		store.On("Get", ctx, "betfair-session-token").Return("token", nil)
+
+		catalogue, err := client.ListMarketCatalogue(ctx, ListMarketCatalogueRequest{})
 
 		if catalogue != nil {
 			t.Fatalf("Test failed, expected nil, got %+v", catalogue)
@@ -182,10 +222,15 @@ func TestClient_ListMarketBook(t *testing.T) {
 	t.Run("returns a slice of market book struct", func(t *testing.T) {
 		url := "https://api.betfair.com/exchange/betting/rest/v1.0/listMarketBook/"
 		server := mockResponseServer(t, marketBookResponse, 200, url)
+		store := new(MockStore)
 
-		client := NewClient(server, credentials)
+		ctx := context.Background()
 
-		book, err := client.ListMarketBook(context.Background(), ListMarketBookRequest{})
+		client := NewClient(server, credentials, store)
+
+		store.On("Get", ctx, "betfair-session-token").Return("token", nil)
+
+		book, err := client.ListMarketBook(ctx, ListMarketBookRequest{})
 
 		if err != nil {
 			t.Fatalf("Test failed, expected nil, got %s", err.Error())
@@ -224,10 +269,15 @@ func TestClient_ListMarketBook(t *testing.T) {
 	t.Run("gracefully handles error response", func(t *testing.T) {
 		url := "https://api.betfair.com/exchange/betting/rest/v1.0/listMarketBook/"
 		server := mockResponseServer(t, errorBettingResponse, 400, url)
+		store := new(MockStore)
 
-		client := NewClient(server, credentials)
+		ctx := context.Background()
 
-		book, err := client.ListMarketBook(context.Background(), ListMarketBookRequest{})
+		client := NewClient(server, credentials, store)
+
+		store.On("Get", ctx, "betfair-session-token").Return("token", nil)
+
+		book, err := client.ListMarketBook(ctx, ListMarketBookRequest{})
 
 		if book != nil {
 			t.Fatalf("Test failed, expected nil, got %+v", book)
@@ -243,10 +293,15 @@ func TestClient_ListRunnerBook(t *testing.T) {
 	t.Run("returns a slice of market book struct", func(t *testing.T) {
 		url := "https://api.betfair.com/exchange/betting/rest/v1.0/listRunnerBook/"
 		server := mockResponseServer(t, listRunnerResponse, 200, url)
+		store := new(MockStore)
 
-		client := NewClient(server, credentials)
+		ctx := context.Background()
 
-		book, err := client.ListRunnerBook(context.Background(), ListRunnerBookRequest{})
+		client := NewClient(server, credentials, store)
+
+		store.On("Get", ctx, "betfair-session-token").Return("token", nil)
+
+		book, err := client.ListRunnerBook(ctx, ListRunnerBookRequest{})
 
 		if err != nil {
 			t.Fatalf("Test failed, expected nil, got %s", err.Error())
@@ -294,10 +349,15 @@ func TestClient_ListRunnerBook(t *testing.T) {
 	t.Run("gracefully handles error response", func(t *testing.T) {
 		url := "https://api.betfair.com/exchange/betting/rest/v1.0/listRunnerBook/"
 		server := mockResponseServer(t, errorBettingResponse, 400, url)
+		store := new(MockStore)
 
-		client := NewClient(server, credentials)
+		ctx := context.Background()
 
-		book, err := client.ListRunnerBook(context.Background(), ListRunnerBookRequest{})
+		client := NewClient(server, credentials, store)
+
+		store.On("Get", ctx, "betfair-session-token").Return("token", nil)
+
+		book, err := client.ListRunnerBook(ctx, ListRunnerBookRequest{})
 
 		if book != nil {
 			t.Fatalf("Test failed, expected nil, got %+v", book)
@@ -313,10 +373,15 @@ func TestClient_PlaceOrder(t *testing.T) {
 	t.Run("returns a PlaceExecutionReport struct", func(t *testing.T) {
 		url := "https://api.betfair.com/exchange/betting/rest/v1.0/placeOrders/"
 		server := mockResponseServer(t, placeOrderSuccessResponse, 200, url)
+		store := new(MockStore)
 
-		client := NewClient(server, credentials)
+		ctx := context.Background()
 
-		report, err := client.PlaceOrder(context.Background(), PlaceOrderRequest{})
+		client := NewClient(server, credentials, store)
+
+		store.On("Get", ctx, "betfair-session-token").Return("token", nil)
+
+		report, err := client.PlaceOrder(ctx, PlaceOrderRequest{})
 
 		if err != nil {
 			t.Fatalf("Test failed, expected nil, got %s", err.Error())
@@ -325,12 +390,12 @@ func TestClient_PlaceOrder(t *testing.T) {
 		a := assert.New(t)
 
 		instruction := PlaceInstruction{
-			OrderType:          "LIMIT",
-			SelectionID:        47973,
-			Side:               "BACK",
-			LimitOrder:         LimitOrder{
-				Size: 8.24,
-				Price: 1.62,
+			OrderType:   "LIMIT",
+			SelectionID: 47973,
+			Side:        "BACK",
+			LimitOrder: LimitOrder{
+				Size:            8.24,
+				Price:           1.62,
 				PersistenceType: "PERSIST",
 			},
 		}
@@ -352,10 +417,15 @@ func TestClient_PlaceOrder(t *testing.T) {
 	t.Run("returns a failing PlaceExecutionReport struct", func(t *testing.T) {
 		url := "https://api.betfair.com/exchange/betting/rest/v1.0/placeOrders/"
 		server := mockResponseServer(t, placeOrderFailureResponse, 200, url)
+		store := new(MockStore)
 
-		client := NewClient(server, credentials)
+		ctx := context.Background()
 
-		report, err := client.PlaceOrder(context.Background(), PlaceOrderRequest{})
+		client := NewClient(server, credentials, store)
+
+		store.On("Get", ctx, "betfair-session-token").Return("token", nil)
+
+		report, err := client.PlaceOrder(ctx, PlaceOrderRequest{})
 
 		if err != nil {
 			t.Fatalf("Test failed, expected nil, got %s", err.Error())
@@ -364,12 +434,12 @@ func TestClient_PlaceOrder(t *testing.T) {
 		a := assert.New(t)
 
 		instruction := PlaceInstruction{
-			OrderType:          "LIMIT",
-			SelectionID:        47972,
-			Side:               "BACK",
-			LimitOrder:         LimitOrder{
-				Size: 2.0,
-				Price: 39.65,
+			OrderType:   "LIMIT",
+			SelectionID: 47972,
+			Side:        "BACK",
+			LimitOrder: LimitOrder{
+				Size:            2.0,
+				Price:           39.65,
 				PersistenceType: "PERSIST",
 			},
 		}
@@ -391,10 +461,15 @@ func TestClient_PlaceOrder(t *testing.T) {
 	t.Run("gracefully handles error response", func(t *testing.T) {
 		url := "https://api.betfair.com/exchange/betting/rest/v1.0/placeOrders/"
 		server := mockResponseServer(t, errorBettingResponse, 400, url)
+		store := new(MockStore)
 
-		client := NewClient(server, credentials)
+		ctx := context.Background()
 
-		report, err := client.PlaceOrder(context.Background(), PlaceOrderRequest{})
+		client := NewClient(server, credentials, store)
+
+		store.On("Get", ctx, "betfair-session-token").Return("token", nil)
+
+		report, err := client.PlaceOrder(ctx, PlaceOrderRequest{})
 
 		if report != nil {
 			t.Fatalf("Test failed, expected nil, got %+v", report)
