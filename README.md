@@ -28,13 +28,14 @@ func main() {
         Password:   "my-secret-password-1",
         Key :       "thUjaEEdBy",
     }
+	
+	client := *http.Client{}
+	
+	store := myimplementation.Store{}
     
-    client := betfair.Client{
-        HTTPClient:    *http.Client{},
-        Credentials:   creds,
-    }   
+    bfClient := betfair.NewClient(client, creds, store) 
     
-    competitions, err := client.ListCompetitions(context.Background(), ListCompetitionsRequest{}) 
+    competitions, err := bfClient.ListCompetitions(context.Background(), ListCompetitionsRequest{}) 
 
     if err != nil {
         fmt.Printf("%s\n", err)
